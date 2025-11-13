@@ -41,8 +41,7 @@ See a live demo:
 
 ## Screenshot
 
-<!-- Add your screenshot here if available -->
-![Tic Tac Toe Screenshot](screenshot.png)
+![Tic Tac Toe Gameplay](Screenshot-2025-11-13-at-10.46.30-PM.jpg)
 
 ## License
 
