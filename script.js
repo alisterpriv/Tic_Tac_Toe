@@ -51,7 +51,7 @@ function switchPlayer() {
   } else {
     currentPlayer = "X";
   }
-  showStatusMessage(`It is ${currentPlayer}'s turn`);
+  showStatusMessage(`It's ${currentPlayer}'s turn`);
 }
 
 function endGame(message) {
@@ -61,7 +61,7 @@ function endGame(message) {
 
 function checkGameResult() {
   if (checkWin()) {
-    endGame(`Player ${currentPlayer} win!`);
+    endGame(`Player ${currentPlayer} wins!`);
   } else if (checkDraw()) {
     endGame("It's a draw!");
   } else {
@@ -75,8 +75,25 @@ function isMoveAllowed(index) {
 
 function onCellClick(event) {
   const index = parseInt(event.target.getAttribute("data-index"));
-  if (!isMoveAllowed(index)) return;
+  if (!isMoveAllowed(index) || currentPlayer !== "X") return; // Only let human play X
   playTurn(event.target, index);
+  checkGameResult();
+  // Computer's turn if the game is still active
+  if (gameIsActive && currentPlayer === "O") {
+    setTimeout(computerMove, 500); // Add a small delay for realism
+  }
+}
+
+function computerMove() {
+  // Only play if O's turn and game is active
+  if (!gameIsActive || currentPlayer !== "O") return;
+  // Collect all empty cells
+  let emptyIndices = board.map((cell, idx) => cell === "" ? idx : null).filter(i => i !== null);
+  if (emptyIndices.length === 0) return;
+  let move = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+  board[move] = currentPlayer;
+  // Update cell visually
+  cells[move].textContent = currentPlayer;
   checkGameResult();
 }
 
@@ -84,11 +101,9 @@ function resetGame() {
   board = ["", "", "", "", "", "", "", "", ""];
   currentPlayer = "X";
   gameIsActive = true;
-
   cells.forEach((cell) => {
     cell.textContent = "";
   });
-
   showStatusMessage(`It's ${currentPlayer}'s turn`);
 }
 
