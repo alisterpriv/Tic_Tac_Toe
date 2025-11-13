@@ -78,7 +78,7 @@ function onCellClick(event) {
   if (!isMoveAllowed(index) || currentPlayer !== "X") return; // Only let human play X
   playTurn(event.target, index);
   checkGameResult();
-  // Computer's turn if the game is still active
+  // Computer's turn if the game is still active and now O's turn
   if (gameIsActive && currentPlayer === "O") {
     setTimeout(computerMove, 500); // Add a small delay for realism
   }
@@ -109,8 +109,10 @@ function resetGame() {
 
 function setupEventListeners() {
   cells.forEach((cell) => {
+    cell.removeEventListener("click", onCellClick); // Avoid duplicate listeners
     cell.addEventListener("click", onCellClick);
   });
+  resetButton.removeEventListener("click", resetGame);
   resetButton.addEventListener("click", resetGame);
 }
 
